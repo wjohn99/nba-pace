@@ -5,7 +5,7 @@ output: pdf_document
 
 # Loading Packages
 
-This code will load some packages to help us retrieve NBA data from ESPN's API that will be used to generate and analyze visualizations.
+This code will load some packages to help us retrieve NBA data from ESPN's API that will be used to generate visualizations.
 
 ```{r setup}
 devtools::install_github(repo = "saiemgilani/hoopR") 
@@ -55,8 +55,8 @@ for (id in 1:30) {
   regteams20 <- c(regteams20, list(reg20))
 }
 regpace20 <- do.call(rbind, regteams20)
-
 ```
+
 ```{r plots}
 # 2023
 regpace23 %>% 
