@@ -1,21 +1,11 @@
----
-title: "Pacing to Victory: Unraveling the Relationship Between Pace and Winning"
-output: pdf_document
----
-
 # Loading Packages
-
-This code will load some packages to help us retrieve NBA data from ESPN's API that will be used to generate and analyze visualizations.
-
-```{r setup}
 devtools::install_github(repo = "saiemgilani/hoopR") 
+
 pacman::p_load(tidyverse, hoopR, cowplot, ggimage, ggplot2, dplyr)
 knitr::opts_chunk$set(echo = TRUE)
-```
 
 # Exploring NBA Pace Data
 
-```{r pace}
 # 2023 
 regteams23 <- list()
 for (id in 1:30) {
@@ -56,36 +46,35 @@ for (id in 1:30) {
 }
 regpace20 <- do.call(rbind, regteams20)
 
-```
-```{r plots}
-# 2023
+# Plotting 2023 Regular Season
 regpace23 %>% 
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
   labs(x = "Team Pace", y = "Average Points Per Game", subtitle = "2022-2023 Regular Season") + 
   theme(legend.title = element_blank())
 
+# Plotting 2023 Postseason
 postpace23 %>% 
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
   labs(x = "Team Pace", y = "Average Points Per Game", subtitle = "2022-2023 Postseason") + 
   theme(legend.title = element_blank())
 
-#2022
+# Plotting 2022
 regpace22 %>% 
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
   labs(x = "Team Pace", y = "Average Points Per Game", subtitle = "2021-2022 Regular Season") + 
   theme(legend.title = element_blank())
 
-#2021
+# Plotting 2021
 regpace21 %>% 
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
   labs(x = "Team Pace", y = "Average Points Per Game", subtitle = "2020-2021 Regular Season") + 
   theme(legend.title = element_blank())
 
-#2020
+# Plotting 2020
 regpace20 %>% 
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
@@ -96,16 +85,14 @@ regpace20 %>%
 regplot <- regpace23 %>%
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
-  labs(x = "Team Pace",
-       y = "Average Points Per Game") +
+  labs(x = "Team Pace", y = "Average Points Per Game") +
   theme(panel.grid.minor = element_blank()) +
   geom_abline(slope = -1.5, intercept = c(seq(-0.3, 0.4, by = 0.1)), color = "gray")
 
 postplot <- postpace23 %>%
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
-  labs(x = "Team Pace",
-       y = "Average Points Per Game") +
+  labs(x = "Team Pace", y = "Average Points Per Game") +
   theme(panel.grid.minor = element_blank()) +
   geom_abline(slope = -1.5, intercept = c(seq(-0.3, 0.4, by = 0.1)), color = "gray")
 
@@ -113,7 +100,7 @@ regpost <- bind_rows(
   regpace23 %>% mutate(season_type = "Regular"),
   postpace23 %>% mutate(season_type = "Playoffs")
 )
-  
+
 regpostplot <- regpost %>%
   ggplot(aes(x = offensive_pace_factor, y = offensive_avg_points)) +
   geom_image(aes(image = logo_href), size = 0.12) +
@@ -127,8 +114,9 @@ regpostplot <- regpost %>%
   facet_grid(season_type ~ .)
 regpostplot
 
+# EFG% Plot
 regpace23 %>%
-ggplot(aes(x = reorder(team_abbreviation, offensive_pace_factor), y = offensive_effective_fg_pct)) +
+  ggplot(aes(x = reorder(team_abbreviation, offensive_pace_factor), y = offensive_effective_fg_pct)) +
   geom_bar(stat = "identity", fill = "skyblue", color = "black", width = 0.7) +
   geom_hline(yintercept = 54.5, color = "red", alpha = 0.7) +
   labs(
@@ -138,5 +126,4 @@ ggplot(aes(x = reorder(team_abbreviation, offensive_pace_factor), y = offensive_
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text()) +
-  coord_flip() 
-```
+  coord_flip()
